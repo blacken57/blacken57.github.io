@@ -11,6 +11,7 @@
 <div>
   <button id="myBtn">Destroy all balls</button>
   <p id="demo">Click on the canvas to create balls</p>
+  <p id="number"></p>
 </div>
 <body>
 
@@ -20,11 +21,12 @@
 	// JavaScript code goes here
 	var canvas = document.getElementById("myCanvas");
 	var ctx = canvas.getContext("2d");
-	var x = [100,100,145];
-	var y = [50,50,130];
+	var x = [100];
+	var y = [130];
 	var ballRadius = 20;
 	var dx = [2,1,5];
 	var dy = [-2,2,3];
+	var count = 0;
 	function getRandomColor() {
 	  var letters = '0123456789ABCDEF';
 	  var color = '#';
@@ -41,14 +43,14 @@
 
 
 	function create(){
-		
-		drawBall(x[0],y[0],color[0]);
 		color.push(getRandomColor());
+		count = count+1;
 		x.push(Math.random()*250 + 70);
 		y.push(Math.random()*250 + 50);
 		dx.push(Math.random()*4);
 		dy.push(Math.random()*4);
 		document.getElementById("demo").innerHTML = "Great job on creating balls";
+		document.getElementById("number").innerHTML = count+" balls";
 	}
 
 	function destroy(){
@@ -57,6 +59,9 @@
 		dx = [2];
 		dy = [2];
 		color = [getRandomColor()];
+		count = 0;
+		document.getElementById("number").innerHTML = count+" balls";
+		document.getElementById("demo").innerHTML = "Create new balls";
 	}
 
 	function drawBall(x,y,color) {	
