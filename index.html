@@ -8,6 +8,10 @@
     	canvas { background: #eee; display: block; margin: 0 auto; }
     </style>
 </head>
+<div>
+  <button id="myBtn">Destroy all balls</button>
+  <p id="demo">Click on the canvas to create balls</p>
+</div>
 <body>
 
 <canvas id="myCanvas" width="500" height="500"></canvas>
@@ -16,11 +20,11 @@
 	// JavaScript code goes here
 	var canvas = document.getElementById("myCanvas");
 	var ctx = canvas.getContext("2d");
-	var x = canvas.width/2;
-	var y = canvas.height-30;
+	var x = [100,100,145];
+	var y = [50,50,130];
 	var ballRadius = 20;
-	var dx = 2;
-	var dy = -2;
+	var dx = [2,1,5];
+	var dy = [-2,2,3];
 	function getRandomColor() {
 	  var letters = '0123456789ABCDEF';
 	  var color = '#';
@@ -29,24 +33,55 @@
 	  }
 	  return color;
 	}
-	var color = getRandomColor();
+	var color = ["fd"];
+	color.push(getRandomColor());
+	color.push(getRandomColor());
+	canvas.onclick = function() {create()};
+	document.getElementById("myBtn").onclick = function() {destroy()};
 
-	function drawBall() {
+
+	function create(){
+		
+		drawBall(x[0],y[0],color[0]);
+		color.push(getRandomColor());
+		x.push(Math.random()*250 + 70);
+		y.push(Math.random()*250 + 50);
+		dx.push(Math.random()*4);
+		dy.push(Math.random()*4);
+		document.getElementById("demo").innerHTML = "Great job on creating balls";
+	}
+
+	function destroy(){
+		x = [50];
+		y = [100];
+		dx = [2];
+		dy = [2];
+		color = [getRandomColor()];
+	}
+
+	function drawBall(x,y,color) {	
 	    ctx.beginPath();
 	    ctx.arc(x, y, ballRadius, 0, Math.PI*2);
 	    ctx.fillStyle = color;
 	    ctx.fill();
-	    ctx.closePath();
+	    ctx.closePath();	
 	}
+	
+
 
 	function draw() {
 	    ctx.clearRect(0, 0, canvas.width, canvas.height);
-	    if(canvas.width-ballRadius<x || ballRadius>x){dx = -dx; color = getRandomColor();}
-	    if(canvas.height-ballRadius<y || ballRadius>y){dy = -dy; color = getRandomColor();}
-	    
-	    drawBall();
-	    x += dx;
-	    y += dy;
+
+	    for(var i=1;i<x.length;i++)
+	    {
+
+		    if(canvas.width-ballRadius<x[i] || ballRadius>x[i]){dx[i] = -dx[i]; }
+		    if(canvas.height-ballRadius<y[i] || ballRadius>y[i]){dy[i] = -dy[i]; }
+		    
+		    drawBall(x[i],y[i],color[i]);
+		    x[i] += dx[i];
+		    y[i] += dy[i];
+		}
 	}
 	setInterval(draw, 10);
 </script>
