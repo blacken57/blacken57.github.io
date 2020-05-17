@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop</title>
+    <title>Balls</title>
     <style>
     	* { padding: 0; margin: 0; }
     	canvas { background: #eee; display: block; margin: 0 auto; }
@@ -168,7 +168,7 @@
 	    }
 	    for(var i=1;i<x.length;i++)
 	    {
-	    	if(distance(x[i],y[i],(paddleX+paddleWidth/2),(paddleY+paddleHeight/2))<paddleHeight-1){destroy();alert("Game Over!")}
+	    	if(distance(x[i],y[i],(paddleX+paddleWidth/2),(paddleY+paddleHeight/2))<paddleHeight-1){destroy();alert("Game Over! Your score is: "+x.length)}
 		}
 	}
 
