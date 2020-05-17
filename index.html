@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Ball Game</title>
+    <title>Gamedev Canvas Workshop</title>
     <style>
     	* { padding: 0; margin: 0; }
     	canvas { background: #eee; display: block; margin: 0 auto; }
@@ -19,7 +19,54 @@
 
 <script>
 	// JavaScript code goes here
+	document.addEventListener("keydown", keyDownHandler, false);
+	document.addEventListener("keyup", keyUpHandler, false);
 	var canvas = document.getElementById("myCanvas");
+	var paddleHeight = 30;
+	var paddleWidth = 30;
+	var paddleX = (canvas.width-paddleWidth)/2;
+	var paddleY = (canvas.height-paddleHeight)/2
+	var rightPressed = false;
+	var leftPressed = false;
+	var upPressed = false;
+	var downPressed  = false;
+
+	function keyDownHandler(e) {
+	    if(e.key == "Right" || e.key == "ArrowRight") {
+	        rightPressed = true;
+	    }
+	    else if(e.key == "Left" || e.key == "ArrowLeft") {
+	        leftPressed = true;
+	    }
+	    else if(e.key == "Up" || e.key == "ArrowUp") {
+	        upPressed = true;
+	    }
+	    else if(e.key == "Down" || e.key == "ArrowDown") {
+	        downPressed = true;
+	    }
+	}
+
+	function keyUpHandler(e) {
+	    if(e.key == "Right" || e.key == "ArrowRight") {
+	        rightPressed = false;
+	    }
+	    else if(e.key == "Left" || e.key == "ArrowLeft") {
+	        leftPressed = false;
+	    }
+	    else if(e.key == "Up" || e.key == "ArrowUp") {
+	        upPressed = false;
+	    }
+	    else if(e.key == "Down" || e.key == "ArrowDown") {
+	        downPressed = false;
+	    }
+	}
+	function drawPaddle() {
+	    ctx.beginPath();
+	    ctx.rect(paddleX, paddleY, paddleWidth, paddleHeight);
+	    ctx.fillStyle = "#0095DD";
+	    ctx.fill();
+	    ctx.closePath();
+	}
 	var ctx = canvas.getContext("2d");
 	var x = [100];
 	var y = [130];
@@ -49,7 +96,7 @@
 		y.push(Math.random()*250 + 50);
 		dx.push(Math.random()*4);
 		dy.push(Math.random()*4);
-		document.getElementById("demo").innerHTML = "Great job on creating balls";
+		document.getElementById("demo").innerHTML = "Great job on creating balls. Now avoid them";
 		document.getElementById("number").innerHTML = count+" balls";
 	}
 
@@ -60,7 +107,7 @@
 		dy = [2];
 		color = [getRandomColor()];
 		count = 0;
-		document.getElementById("number").innerHTML = count+" balls";
+		document.getElementById("number").innerHTML = "Score: "+count;
 		document.getElementById("demo").innerHTML = "Create new balls";
 	}
 
@@ -72,10 +119,18 @@
 	    ctx.closePath();	
 	}
 	
+	function distance(x1,y1,x2,y2)
+	{
+		var a = x1 - x2;
+		var b = y1 - y2;
+		var c = Math.sqrt( a*a + b*b );
+		return c;
+	}
 
 
 	function draw() {
 	    ctx.clearRect(0, 0, canvas.width, canvas.height);
+	    drawPaddle();
 
 	    for(var i=1;i<x.length;i++)
 	    {
@@ -87,7 +142,37 @@
 		    x[i] += dx[i];
 		    y[i] += dy[i];
 		}
+		if(rightPressed) {
+	        paddleX += 7;
+	        if (paddleX + paddleWidth > canvas.width){
+	            paddleX = canvas.width - paddleWidth;
+	        }
+	    }
+	    if(leftPressed) {
+	        paddleX -= 7;
+	        if (paddleX < 0){
+	            paddleX = 0;
+	        }
+	    }
+	    if(downPressed) {
+	        paddleY += 7;
+	        if (paddleY + paddleHeight > canvas.height){
+	            paddleY = canvas.height - paddleHeight;
+	        }
+	    }
+	    if(upPressed) {
+	        paddleY -= 7;
+	        if (paddleY < 0){
+	            paddleY = 0;
+	        }
+	    }
+	    for(var i=1;i<x.length;i++)
+	    {
+	    	if(distance(x[i],y[i],(paddleX+paddleWidth/2),(paddleY+paddleHeight/2))<paddleHeight-1){destroy();alert("Game Over!")}
+		}
 	}
+
+
 	setInterval(draw, 10);
 </script>
 
