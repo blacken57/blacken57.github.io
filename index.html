@@ -30,6 +30,8 @@
 	var leftPressed = false;
 	var upPressed = false;
 	var downPressed  = false;
+	var c;
+	start = new Date().getTime();
 
 	function keyDownHandler(e) {
 	    if(e.key == "Right" || e.key == "ArrowRight") {
@@ -98,6 +100,7 @@
 		dy.push(Math.random()*4);
 		document.getElementById("demo").innerHTML = "Great job on creating balls. Now avoid them";
 		document.getElementById("number").innerHTML = count+" balls";
+		c = x.length;
 	}
 
 	function destroy(){
@@ -168,12 +171,19 @@
 	    }
 	    for(var i=1;i<x.length;i++)
 	    {
-	    	if(distance(x[i],y[i],(paddleX+paddleWidth/2),(paddleY+paddleHeight/2))<paddleHeight-1){var c = x.length;destroy();alert("Game Over! Your score is: "+c-1)}
+	    	if(distance(x[i],y[i],(paddleX+paddleWidth/2),(paddleY+paddleHeight/2))<paddleHeight-1){var end = new Date().getTime();alert("Game Over! Your score is: " + count); destroy();}
 		}
+	}
+
+	function manage()
+	{
+		create();
 	}
 
 
 	setInterval(draw, 10);
+	
+	setInterval(manage, 1000);
 </script>
 
 </body>
